@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Cierra Friend Survey Yay!</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Start Survey</h1>
+        <hr style="margin-top: 20px">
+        <h2><i class="medium material-icons">fingerprint</i>About You?</h2>
+        <form>
+            <div class="form-group">
+                <label for="nameInput">Name (Required):</label>
+                <input type="text" class="form-control" id="new-name" placeholder="name">
+            </div>
+            <div class="form-group">
+                <label for="photoInput">Link To Photo (Required):</label>
+                <input type="text" class="form-control" id="friend-photo" placeholder="link">
+            </div>
+            <hr>
+            <h3>Question 1.</h3>
+            <div class="form-group">
+                <label for="question1">Q 1.</label>
+                <select class="form-control" id="question1">
+                    <option value="one">1 (strongly disagree)</option>
+                    <option value="two">2</option>
+                    <option value="three">3</option>
+                    <option value="four">4</option>
+                    <option value="five">5 (strongly agree)</option>
+                </select>
+            </div>
+            <h3>Question 2.</h3>
+            <div class="form-group">
+                <label for="question2">Q 2.</label>
+                <select class="form-control" id="question2">
+                    <option value="one">1 (strongly disagree)</option>
+                    <option value="two">2</option>
+                    <option value="three">3</option>
+                    <option value="four">4</option>
+                    <option value="five">5 (strongly agree)</option>
+                </select>
+            </div>
+            <h3>Question 3.</h3>
+            <div class="form-group">
+                <label for="question3">Q 3.</label>
+                <select class="form-control" id="question3">
+                    <option value="one">1 (strongly disagree)</option>
+                    <option value="two">2</option>
+                    <option value="three">3</option>
+                    <option value="four">4</option>
+                    <option value="five">5 (strongly agree)</option>
+                </select>
+            </div>
+            <h3>Question 4.</h3>
+            <div class="form-group">
+                <label for="question4">Q 4.</label>
+                <select class="form-control" id="question4">
+                    <option value="one">1 (strongly disagree)</option>
+                    <option value="two">2</option>
+                    <option value="three">3</option>
+                    <option value="four">4</option>
+                    <option value="five">5 (strongly agree)</option>
+                </select>
+            </div>
+            <h3>Question 5.</h3>
+            <div class="form-group">
+                <label for="question5">Q 5.</label>
+                <select class="form-control" id="question5">
+                    <option value="one">1 (strongly disagree)</option>
+                    <option value="two">2</option>
+                    <option value="three">3</option>
+                    <option value="four">4</option>
+                    <option value="five">5 (strongly agree)</option>
+                </select>
+            </div>
+            <h3>Question 6.</h3>
+            <div class="form-group">
+                <label for="question6">Q 6.</label>
+                <select class="form-control" id="question6">
+                    <option value="one">1 (strongly disagree)</option>
+                    <option value="two">2</option>
+                    <option value="three">3</option>
+                    <option value="four">4</option>
+                    <option value="five">5 (strongly agree)</option>
+                </select>
+            </div>
+            <!-- <button type="submit" class="btn btn-secondary btn-lg btn-block btn-info"><i class="medium material-icons">offline_pin</i>Submit</button> -->
+        </form>
+        <div class="text-center">
+            <button id="submitBtn" type="submit" class="btn btn-success btn-lg btn-block btn-info"><i
+                    class="medium material-icons">offline_pin</i>Submit</button>
+        </div>
+        <div id="results-modal" class="modal fade" role="dialog" style="display: block;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header"><button type="button" class="close" data-dismiss="modal">×</button>
+                        <h2 class="modal-title">New Best Friend!</h2>
+                    </div>
+                    <div class="modal-body">
+                        <h2 id="bffName"></h2>
+                        <img id="bffPhoto" src="#">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    $("#submitBtn").on("click", function (event) {
+        event.preventDefault();
+
+        var newFriend = {
+            name: $("#new-name").val().trim(),
+            photo: $("#friend-photo").val().trim(),
+            value: [
+                $("#question1").val(),
+                $("#question2").val(),
+                $("#question3").val(),
+                $("#question4").val(),
+                $("#question5").val(),
+                $("#question6").val()
+            ]
+        };
+        console.log(newFriend);
+
+        var currentURL = window.location.origin;
+
+        $.post(currentURL + "/api/friends", newFriend,
+            function (data) {
+                $("#bffName").text(data.name);
+                $("#bffPhoto").attr("src", data.photo);
+                $("#results-modal").modal("toggle");
+            });
+    });
+</script>
